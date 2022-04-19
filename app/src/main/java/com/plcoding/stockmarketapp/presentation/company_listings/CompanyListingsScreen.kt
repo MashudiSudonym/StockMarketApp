@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -45,22 +46,27 @@ fun CompanyListingsScreen(
         SwipeRefresh(
             state = swipeRefreshState,
             onRefresh = { viewModel.onEvent(CompanyListingsEvent.Refersh) }) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.companies.size) { item ->
-                    val company = state.companies[item]
 
-                    CompanyItem(
-                        company = company,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                // TODO: Navigate to detail screen
-                            }
-                            .padding(16.dp)
-                    )
+            if (state.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+            } else {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(state.companies.size) { item ->
+                        val company = state.companies[item]
 
-                    if (item < state.companies.size) {
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        CompanyItem(
+                            company = company,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    // TODO: Navigate to detail screen
+                                }
+                                .padding(16.dp)
+                        )
+
+                        if (item < state.companies.size) {
+                            Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        }
                     }
                 }
             }
