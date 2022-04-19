@@ -16,9 +16,13 @@ import javax.inject.Inject
 @HiltViewModel
 class CompanyListingsViewModel @Inject constructor(private val stockRepository: StockRepository) :
     ViewModel() {
-    private var state by mutableStateOf(CompanyListingsState())
+    var state by mutableStateOf(CompanyListingsState())
 
     private var searchJob: Job? = null
+
+    init {
+        getCompanyListings()
+    }
 
     fun onEvent(event: CompanyListingsEvent) {
         when (event) {
